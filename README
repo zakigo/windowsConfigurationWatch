@@ -1,0 +1,34 @@
+说明：
+类似鲁大师的系统配置查看工具
+使用python3做的，会弹框系统配置，然后在D盘中生成：
+D://本电脑配置.txt
+
+使用Python3.10时，Pyinstaller出现IndexError: tuple index out of range错误，部分异常信息如下：
+
+.......
+    yield from get_instructions(code_object)
+  File "C:\Program Files\Python\lib\dis.py", line 338, in _get_instructions_bytes
+    argval, argrepr = _get_const_info(arg, constants)
+  File "C:\Program Files\Python\lib\dis.py", line 292, in _get_const_info
+    argval = const_list[const_index]
+IndexError: tuple index out of range
+解决办法
+修改C:\Program Files\Python\lib\dis.py文件，找到_unpack_opargs函数，在倒数第二行中添加extended_arg = 0即可，修改后的代码如下：
+
+
+def _unpack_opargs(code):
+    extended_arg = 0
+    for i in range(0, len(code), 2):
+        op = code[i]
+        if op >= HAVE_ARGUMENT:
+            arg = code[i+1] | extended_arg
+            extended_arg = (arg << 8) if op == EXTENDED_ARG else 0
+        else:
+            arg = None
+            extended_arg = 0  # +
+        yield (i, op, arg)
+
+作者：txfly
+链接：https://www.jianshu.com/p/971141201105
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
