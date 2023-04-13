@@ -3,9 +3,6 @@
 使用python3做的，会弹框系统配置，然后在D盘中生成：
 D://本电脑配置.txt
 
-打包exe指令：
-pyinstaller.exe -F .\1.py
-
 使用Python3.10时，Pyinstaller出现IndexError: tuple index out of range错误，部分异常信息如下：
 
 .......
